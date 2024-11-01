@@ -1,0 +1,480 @@
+\documentclass[conference]{IEEEtran}
+\usepackage{cite}
+\usepackage{xurl}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{algorithmic}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{xcolor}
+\usepackage{cleveref, array, booktabs, threeparttable}
+\usepackage{kotex}
+\usepackage{makecell}
+\usepackage{float}
+\usepackage{subcaption}
+\usepackage{titlesec}
+\usepackage{tabularx}
+\usepackage{longtable}
+\usepackage{multicol}
+\usepackage{listings}
+\usepackage{cleveref, array, booktabs, threeparttable}
+\usepackage{tabu} 
+\usepackage{enumitem}
+\usepackage{blindtext}
+\usepackage[english]{babel}
+\usepackage{comment}
+\usepackage{float}
+\usepackage{fontsize}
+\fontsize{11pt}{13pt}\selectfont
+\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+
+\titlespacing*{\section}
+{0pt}   % left indent
+{15pt}  % space before
+{5pt}  % space after
+
+\begin{document}
+\sloppy
+
+\title{ShoppingNova\\
+{\footnotesize Group Name: ITCT}
+}
+
+\author{\IEEEauthorblockN{1\textsuperscript{st} Hong-Sung Mun}
+\IEEEauthorblockA{\textit{dept. Computer Softwareline} \\
+\textit{HanYang Univ.}\\
+Seoul, Republic of Korea\\
+sunmoonkr99@hanyang.ac.kr}
+\and
+\IEEEauthorblockN{2\textsuperscript{nd} Ha-Eun Jung}
+\IEEEauthorblockA{\textit{dept. Information System} \\
+\textit{HanYang Univ.}\\
+Seoul, Republic of Korea \\
+hyever15@hangyang.ac.kr}
+\and
+\IEEEauthorblockN{3\textsuperscript{rd} Geon-U Kim}
+\IEEEauthorblockA{\textit{dept. Computer Softwareline} \\
+\textit{HanYang Univ.}\\
+Seoul, Republic of Korea \\
+mambomul@hanyang.ac.kr}
+\and
+\IEEEauthorblockN{4\textsuperscript{th}
+Seon-Woong Ha}
+\IEEEauthorblockA{\textit{dept. Information System} \\
+\textit{HanYang Univ.}\\
+Seoul, Republic of Korea \\
+ha819ha@hanyang.ac.kr}
+}
+
+\maketitle
+
+\begin{abstract}This paper explores a strategy to increase visitors to online shopping malls by introducing a visually distinctive concept. We propose the use of a galaxy-themed visual representation to differentiate the shopping experience. In this model, each product is represented as a star or planet, forming clusters (categories) of products, which then combine to create a galaxy-like shopping environment. The design will be implemented in a stepwise fashion, with each level revealing a new visual layout, enhancing the user's experience as they explore the shopping mall. We believe that this unique visual approach can attract more visitors by providing an engaging and memorable user interface.
+\end{abstract}
+
+\begin{IEEEkeywords}
+Online shopping mall, visual distinction, galaxy concept, user interface design, visitor increase, shopping experience, product visualization, category clusters
+\end{IEEEkeywords}
+
+\begin{table}[ht!] 
+\renewcommand\arraystretch{1.25}
+\begin{threeparttable}
+    \caption{Role Assignments \label{tab:table1}} 
+    \footnotesize
+    \begin{tabular}{@{}p{1.5cm} p{1.7cm}>{\raggedright\arraybackslash}p{4.7cm}@{}} % 너비 조정
+    \toprule
+    \bfseries Role & \bfseries Name & \multicolumn{1}{l}{\bfseries Task description and etc.} \\
+    \midrule
+    User & Geon-U Kim & Defining actual utility of the service \newline and evaluating the value of the service \newline by the user's point. Also giving \newline continuous feedback which meets the \newline user's requirements and helping the \newline development of service.\\
+    Customer & Sung-Moon Hong & Giving opinions for developing a \newline strategy to attract visitors by adding \newline visual enjoyment to the shopping mall. \newline Also criticizing captivation of the \newline beauty of our online shopping mall, \newline and determining whether to make a \newline purchase.\\
+    Software Developer & Ha-Eun Jung & Developing software with analyzing \newline requirements, implementing and \newline testing software features, and \newline maintaining and updating the software \newline performance.\\
+    Development Manager & Seon-Woong Ha & Allocating the tasks to be done in the \newline project to the schedule and selecting \newline the development framework that fits \newline each team member's development \newline stack. Completing software by leading \newline communication between team \newline members. Managing the schedule \newline using Notion and handles code \newline maintenance through Git.\\
+    \bottomrule
+    \end{tabular}
+\end{threeparttable}
+\end{table}
+
+\section{Introduction}
+
+\subsection{Motivation}
+
+In modern online shopping malls, customer experience is prioritized beyond mere product sales and display. As internet users' attention spans continue to shorten, they seek fresh and engaging online experiences. Visually appealing design plays a critical role in shaping the customer's first impression, encouraging longer engagement on the site, and increasing the likelihood of purchase conversion. A user-friendly and aesthetically pleasing website not only differentiates a business in a competitive market but also enhances customer satisfaction and leaves a lasting impression.
+
+In the highly competitive e-commerce landscape, a distinctive visual design is a powerful tool for fostering emotional connections with customers, surpassing the realm of simple aesthetic appeal. Moreover, a visually differentiated online shopping platform can positively impact the attraction of potential new customers. Therefore, it is both valuable and necessary to pursue improvements in the website's visual design to better engage and retain a broader customer base.
+
+\subsection{Problem Statement (Client's Need)}
+
+The current shopping mall website functions adequately in terms of providing product information and facilitating payment systems, but it lacks the visual design and user experience needed to attract a broader customer base. Specifically, there is little incentive for customers to visit the website unless they are explicitly intending to make a purchase. However, if the website could draw in potential
+customers through visual appeal, beyond those simply looking to buy, it would naturally increase product exposure and make a lasting impression. Additionally, aesthetically pleasing designs can enhance user engagement by encouraging visitors to spend more time on the site, thereby increasing the
+likelihood of conversion.
+
+This indicates significant potential for growth in terms of customer acquisition and purchase conversion rates for the shopping mall website.
+Modern consumers seek emotional satisfaction through intuitive and sensory-driven experiences, and during this process, they tend to form long-term relationships with brands that leave a lasting impact. Therefore, the objective of this project is to enhance
+the website's visual appeal, with the goal of attracting and retaining more customers over the long term.
+
+\subsection{Related Software}
+
+\begin{enumerate}
+\setlength{\parindent}{2ex}
+\setlength{\parskip}{0.5em}
+\item TheDropStore
+
+TheDropStore is an online platform that sells a variety of kits to spread awareness about solving water crises. This platform uses 3D elements to provide a differentiated shopping experience. Each product is rendered in a 3D model, allowing the user to experience the real object as if they were looking at a real object. These features allow the customer to enjoy the product search process itself and naturally sympathize with the message about the water crisis.
+
+\item IKEA Place 
+
+IKEA Place is an app that enables furniture to be placed in a virtual space using AR technology. Users can see how 3D furniture models are placed in the space by fusing them with their real environment. This allows users to intuitively identify the harmony of size, color, and design. However, this arrangement requires 3D model files, and if the size or ratio of the model is inaccurate, there is a drawback that can lead to a difference between the virtual and actual arrangements.
+\end{enumerate}
+
+\section{Requirement}
+
+\subsection{User Interface \& User Experience}
+Theme: The theme of the shopping mall webpage is inspired by space, incorporating elements that evoke vastness and mystery of the cosmos. The design features a vast and expansive background with accents of nebula-like colors and celestial imagery, creating an immersive experience that transports users to a universe beyond their own. 
+
+\subsection{User Account Management}
+
+\begin{enumerate}
+\setlength{\parindent}{2ex}
+\setlength{\parskip}{0.5em}
+\item Login
+
+Users can log in to the system using their user ID and password. If incorrect login details are provided, the system will prompt the user to retry entering their information. 
+
+\item Sign-up
+
+Users can sign up by providing a unique user ID, password, name, phone number, and email. The system checks for duplicate user IDs to ensure each user has a unique ID, and passwords must meet specific length and character requirements.
+
+\item Account Information Modification
+
+Users can update their personal information, including their name, phone number, and email, after completing SMS or email verification. They have the ability to review and modify their account information at any time. Additionally, users can view their purchase history, allowing them to check past purchases
+\end{enumerate}
+
+\subsection{Product Management}
+
+\begin{enumerate}
+\setlength{\parindent}{2ex}
+\setlength{\parskip}{0.5em}
+\item Product Registration
+
+Administrators can register new products by entering required details, such as product name, category, and brand. If the desired category or brand does not exist, administrators have the option to add new categories or brands. 
+
+\item Product Information Management
+
+Administrators can update product details, including inventory levels and stock status. They can also delete products from the catalog and receive notifications when items are out of stock. Administrators have access to view detailed information for each product, such as the product's name, price, and current stock status.
+
+\item Product Category
+
+Users can visually browse through multiple categories on the screen. When a specific category is selected, a list of products associated with that category is displayed. By selecting a product, users can view its detailed information, including pricing, descriptions, and stock availability.
+
+\end{enumerate}
+
+\subsection{Shopping Cart} 
+
+Users can add and edit their desired products and quantities in their shopping cart, allowing them to manage their selections efficiently. They have the capability to review their cart contents, select individual items for modification, and update quantities as needed. Additionally, users can remove items from their cart, ensuring they have control over their shopping experience.
+
+\subsection{Product Filtering}
+
+\begin{enumerate}
+\setlength{\parindent}{2ex}
+\setlength{\parskip}{0.5em}
+\item Search Functionality
+
+Users can search for products that match their specified criteria.
+
+\item Sorting Options
+
+Users can sort the products in ascending or descending order based on their selected conditions.
+
+\end{enumerate}
+
+\subsection{Related Product Recommendation}
+
+While browsing, users can receive recommendations for other versions of products that may be of interest to them. This feature provides personalized suggestions based on browsing behavior and product compatibility, enriching the shopping experience by introducing users to alternatives they may not have considered.
+
+\subsection{Security}
+
+The policy for storing, accessing, and deleting user data must be clearly defined with careful consideration for privacy policies. This includes implementing secure data handling practices to protect user information, ensuring compliance with applicable regulations, and regularly reviewing security measures to adapt to evolving privacy standards.
+
+\subsection{Non-Functional} 
+
+A UI that is not inconvenient for users to use should be configured. When expressed in 3D space, an algorithm for calculating the correlation between products is appropriately constructed so that related products may be well recommended.
+
+\section{Development Environment}
+
+\subsection{Choice of Software Development Platform}
+
+\begin{enumerate}
+\setlength{\parindent}{2ex}
+\setlength{\parskip}{0.5em}
+\item Programming Languages
+
+\begin{itemize}
+\setlength{\parindent}{2ex}
+\setlength{\parskip}{0.5em}
+\item JAVA
+
+Java is an open-source, object-oriented programming language developed by Sun Microsystems. Key features of Java include support for Object-Oriented Programming (OOP), automatic memory management through garbage collection, robust exception handling, and multi-threading capabilities. Java supports various frameworks and libraries, and we choose spring boot that support this language.
+
+\item Typescript
+
+TypeScript is a strongly typed programming language that builds on JavaScript and that developed by Microsoft. As a superset of JavaScript, TypeScript is compatible with JavaScript code and includes the latest ECMAScript features. It is designed especially to improve code stability and maintainability at any scale. Key features of TypeScript include static type checking, interfaces, type inference, and support for classes and inheritance. These features makes it suitable for stable development and maintain a high-level of code quality.
+We decided to use Next.js and have experience using typescript, so we chose this language.
+
+\end{itemize}
+
+\item Frameworks \& Libraries
+
+\begin{itemize}
+\setlength{\parindent}{2ex}
+\setlength{\parskip}{0.5em}
+\item Spring Boot
+
+Spring Boot is a Java-based framework that allows rapid development of web applications without complex configurations. In the shopping mall project, Spring Boot serves as the backend, handling essential functions such as user authentication, product and order management, and shopping cart features. It communicates with the frontend via RESTful APIs, and integrates with the database through JPA (Java Persistence API) and Hibernate for efficient CRUD functionality. Spring Boot’s robust architecture ensures scalability and maintainability, making it ideal for large-scale applications.
+
+\item NextJS 
+
+Next.js is a React-based full-stack framework that supports both client-side and server-side rendering. In implementing the frontend of the shopping mall, Next.js enhances page load speed and SEO by pre-fetching data on the server side. Using this library, we build and deploy shopping mall page.
+
+\item Three.js \& React-three-fiber
+
+Three.js is a JavaScript-based 3D graphics library that enables rendering complex 3D scenes and animations in the browser. Operating on top of WebGL, Three.js provides a wide range of APIs for manipulating 3D objects, cameras, lighting, and textures without requiring developers to write direct WebGL code.
+
+React-three-fiber(R3F) abstracts Three.js’s capabilities into React components and hooks. With R3F, developers can utilize React’s state management to easily control dynamic 3D objects, blending standard React components with 3D elements to create immersive user interfaces. Using this library, we will show stars and galaxy elements in a 3D viewer for the products and categories of the shopping mall. 
+
+\end{itemize}
+
+\item Database
+
+\begin{itemize}
+\setlength{\parindent}{2ex}
+\setlength{\parskip}{0.5em}
+\item PostgreSQL
+
+PostgreSQL is an open-source relational database management system known for its high stability and data integrity. In the shopping mall project, PostgreSQL is used to efficiently store and manage structured data such as products, users, and order information. It supports transaction management and adheres to ACID (Atomicity, Consistency, Isolation, Durability) properties, ensuring data reliability. Optimized for handling large volumes of data, PostgreSQL performs well in large-scale applications.
+
+\end{itemize}
+
+\end{enumerate}
+
+\subsection{Software in Use}
+
+\begin{enumerate}
+\setlength{\parindent}{2ex}
+\setlength{\parskip}{0.5em}
+\item Visual Studio Code (Code Editor)
+
+Visual studio code is a source code editor developed by Microsoft for Microsoft Windows, macOS, and Linux. It includes debugging support, Git control, and syntax emphasis functions. It is driven based on Electron framework developed by GitHub.
+
+\item IntelliJ (Code Editor)
+
+A code editor developed by JetBrains, widely used for Java development, with features like code completion, debugging, and refactoring. It also offers seamless integration with SQL databases, allowing developers to connect, query, and manage databases directly within the IDE.
+
+\item Git/Github (Version Management)
+
+A version control system (Git) and an online platform (GitHub) for managing and sharing code repositories, enabling collaboration and version tracking.
+
+\item Docker (Containerization)
+
+A platform for containerization that allows applications to run in isolated environments, making them easier to deploy and scale.
+
+\item AWS EC2
+
+Amazon Web Services’ service for providing virtual servers in the cloud, enabling users to run applications on scalable infrastructure. For our shopping mall, we use EC2 to host the backend application, providing a reliable and scalable environment to handle user requests and manage traffic effectively.
+
+\item AWS S3
+
+Amazon Web Services’ storage service for storing and distributing data (like images) securely in the cloud. We use S3 to store and manage product images and other media files for the shopping mall, ensuring fast and secure access to assets, with the ability to deliver them efficiently to users.
+
+\item Figma
+
+A design and prototyping tool that allows teams to collaborate in real-time on UI/UX designs, making it easy to create and share interactive mockups. Using Figma, we design the shopping mall pages, layout, and user flow. Additionally, real-time feedback from team members allows us to make design adjustments easily.
+
+\item Notion
+
+A versatile tool for task management, scheduling, and documentation, enabling teams to organize projects, track tasks, and store information in a collaborative workspace. With Notion, we can efficiently manage the project schedule, document requirements, and assign tasks. Team members can leave comments and update information in real-time.
+
+\item Overleaf
+
+A specialized online editor for writing documents in LaTeX, a typesetting system commonly used for academic and technical writing, offering precise control over document formatting, especially for complex mathematical and scientific content.
+
+\end{enumerate}
+
+\subsection{version}
+\begin{table}[H] 
+\renewcommand\arraystretch{1.25}
+\centering 
+\begin{threeparttable}
+    \scriptsize
+    \begin{tabular}{@{}p{3cm} p{5.3cm}@{}}
+    \toprule
+    \bfseries Name & \bfseries System Environment \\ 
+    \midrule
+    Geon-U Kim & macOS Sequoia 15.0 \newline Node.js 20.18 , Next.js 15.0\\ 
+    Sung-Moon Hong & macOS Sequoia 15.0 \newline Node.js 20.18 , Next.js 15.0\\ 
+    Ha-Eun Jung & Windows 11 \newline Java SE 23, Spring boot 3.3, PostgreSQL 17\\ 
+    Seon-Woong Ha & Windows 10 \newline Java SE 23, Spring boot 3.3, PostgreSQL 17\\ 
+    \bottomrule
+    \end{tabular}
+\end{threeparttable}
+\end{table}
+
+
+\subsection{Task Distribution}
+
+-
+
+\section{Specification}
+
+\subsection{User Account Management}
+
+\begin{enumerate}
+\setlength{\parindent}{2ex}
+\setlength{\parskip}{0.5em}
+\item Login Page
+
+\begin{itemize}
+\setlength{\parindent}{2ex}
+\setlength{\parskip}{0.5em}
+\item Front-end
+
+Input: Accepts user ID and password input and validates the input values. \newline\hspace*{1.2ex}
+Error Handling: If the user ID or password does not exist in the database, prompts the user to re-enter their credentials.\newline\hspace*{1.2ex}
+DB Query Transmission: Sends the input values as a query to the database to retrieve user information for use in subsequent processes.
+
+\item Back-end
+
+Authentication: Compares the input user ID and password with the stored values in the database and allows login if they match. \newline\hspace*{1.2ex}
+Password Verification: As passwords are stored in encrypted form, the entered password is processed through the same encryption and compared against the stored hash for verification.
+
+\end{itemize}
+
+\item Sign-Up Page
+
+\begin{itemize}
+\setlength{\parindent}{2ex}
+\setlength{\parskip}{0.5em}
+\item Front-end
+
+Input: Collects ID, password, and other personal information from the user, verifying the validity of each field. \newline\hspace*{1.2ex}
+Error Handling: Checks for type errors, duplicates, and other input inconsistencies.
+
+\item Back-end
+
+Unique User Number Assignment: Automatically generates a unique user number (user\_number) for each new user. \newline\hspace*{1.2ex}
+ID Duplication Check: Checks if the input user ID (user\_id) already exists. If duplicate, returns an error message and halts registration. \newline\hspace*{1.2ex}
+Password Security: Encrypts the password for storage, enforcing a minimum length and character combination requirements (e.g., at least 8 characters, including numbers and special characters). \newline\hspace*{1.2ex}
+Date of Birth Format Check: Validates the format of the date of birth input and returns an error if there is a format issue. \newline\hspace*{1.2ex}
+Email and Phone Number Validation: Validates the format of the email and phone number; if invalid, returns an error message. \newline\hspace*{1.2ex}
+Registration Completion Notification: Optionally sends a welcome email or SMS notification to confirm successful registration.
+
+\end{itemize}
+
+\item User Page
+
+\begin{itemize}
+\setlength{\parindent}{2ex}
+\setlength{\parskip}{0.5em}
+\item Front-end
+
+Profile Editing: Provides a page where users can view and edit their profile information. \newline\hspace*{1.2ex}
+View Purchase History: Provides a page where users can view their purchase history, with an option to filter by date.
+
+\item Back-end
+
+Load Purchase History: Retrieves the user’s purchase history from the database. \newline\hspace*{1.2ex}
+Profile Editing: Allows users to update personal information, such as name, phone number, and email. Updated information is validated before updating the database. \newline\hspace*{1.2ex}
+Identity Verification: Requires identity verification before editing personal information, supporting SMS or email verification based on registration details.
+
+\end{itemize}
+
+\end{enumerate}
+
+\subsection{Product Management}
+
+\begin{itemize}
+\setlength{\parindent}{2ex}
+\setlength{\parskip}{0.5em}
+\item Front-end
+
+Product Details Page: When a user clicks on a specific product, a detailed page is displayed, including the product name, price, and description.
+
+\item Back-end
+
+New Product Registration: Required fields include product name, price, initial stock quantity, category, brand, and product description. A unique product ID is automatically assigned, with options to link the product to appropriate categories and brands. Administrator can select from existing categories and brands, with the option to add new categories or brands as needed. \newline\hspace*{1.2ex}
+Product Information Management: Provides functionality for actions such as adding stock or deleting specific products. Notifies the admin when stock reaches zero and marks the product as out of stock. Allows viewing of detailed information for selected products (name, price, description, image, stock status, etc.).
+
+
+
+\end{itemize}
+
+\subsection{Shopping Cart}
+
+\begin{itemize}
+\setlength{\parindent}{2ex}
+\setlength{\parskip}{0.5em}
+\item Front-end
+
+Add to Cart: Allows users to add products to their shopping cart via a button. \newline\hspace*{1.2ex}
+Checkout: Enables users to purchase all or selected items from their cart on the cart page. \newline\hspace*{1.2ex}
+Remove Cart Item: Allows users to remove specific items from their cart. \newline\hspace*{1.2ex}
+Adjust Quantity: Adds `+/-` buttons in the cart for users to adjust product quantities.
+
+\item Back-end
+
+Add to Cart: Adds the selected product to the user's cart.\newline\hspace*{1.2ex}
+Quantity Adjustment: Allows adjusting the quantity of items in the cart using `+/-` buttons, with a maximum limit (e.g., 5 items). \newline\hspace*{1.2ex}
+Remove Cart Item: Provides functionality for users to remove specific items from their cart. \newline\hspace*{1.2ex}
+Handle Duplicates: Prevents duplicate items by recognizing items already in the cart and not adding them again. \newline\hspace*{1.2ex}
+View Cart: Allows users to view items currently in their cart along with the total amount on the cart page.
+
+\end{itemize}
+
+\subsection{Related Product Recommendation}
+
+\begin{itemize}
+\setlength{\parindent}{2ex}
+\setlength{\parskip}{0.5em}
+\item Front-end
+
+Display Recommended Products: Shows similar products in the same category on the product page, allowing easy access to each recommended item.
+
+\item Back-end
+
+Recommended Product Data Processing: Sorts products based on category hierarchy to include models from the same category but with different versions in the recommendation list. For example, if a user views a monitor released in 2020, the backend may recommend a 2024 version as a "latest model" in the recommendations.
+
+\end{itemize}
+
+\subsection{Product Filtering}
+
+\begin{itemize}
+\setlength{\parindent}{2ex}
+\setlength{\parskip}{0.5em}
+\item Front-end
+
+Filter Screen: Provides a filtering screen on the subcategory page where users can adjust filter options such as price, size, and type. \newline\hspace*{1.2ex}
+Apply Filters by Condition: Displays only products that meet the conditions set by the user.
+
+\item Back-end
+
+Filtering Options: Filters products in the database based on conditions such as price range or release year specified by the user. Aggregates and delivers filtered results to the front-end. \newline\hspace*{1.2ex}
+Sorting: Allows users to specify sorting criteria (e.g., price, release year) in ascending or descending order alongside filter conditions. Sorts filtered results on the server before returning sorted data.\newline\hspace*{1.2ex}
+Optimization: Enhances performance of filtering and sorting operations by setting database indexes and optimizing queries.
+
+\end{itemize}
+
+\subsection{Category Control}
+
+\begin{itemize}
+\setlength{\parindent}{2ex}
+\setlength{\parskip}{0.5em}
+\item Front-end
+
+Category Hierarchy: Displays categories in a hierarchy with main, sub, and sub-sub categories labeled as "Galaxy Cluster," "Galaxy," and "Star Cluster," respectively. \newline\hspace*{1.2ex}
+Category Navigation: When a user selects a top-level category (e.g., Galaxy Cluster), the associated subcategories (e.g., Galaxy) are displayed. Selecting a subcategory reveals the final sub-subcategory or product list.
+
+\item Back-end
+
+Category Navigation: When a user selects Layer 1 (main category), the back-end returns a list of Layer 2 (sub-category) items based on the selected category ID. Based on the selection in Layer 2, Layer 3 (sub-sub-category) or the final product list is returned, supporting a step-by-step exploration of the category structure.
+
+\end{itemize}
+
+\end{document}
