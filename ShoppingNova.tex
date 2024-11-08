@@ -296,6 +296,10 @@ A versatile tool for task management, scheduling, and documentation, enabling te
 
 A specialized online editor for writing documents in LaTeX, a typesetting system commonly used for academic and technical writing, offering precise control over document formatting, especially for complex mathematical and scientific content.
 
+\item Listly
+
+A lightweight Google Chrome extension that brings an all-in-one experience to web data collection, trusted by more than 70,000 professionals worldwide. Also, it focuses on areas of unmet data cleaning needs and leverages its expertise to strive for solutions that streamline repetitive tasks and automate data collection processes.  Shopping mall data for demo will be collected by Listly from LG Electronic shopping web site.
+
 \end{enumerate}
 
 \subsection{version}
@@ -328,12 +332,10 @@ A specialized online editor for writing documents in LaTeX, a typesetting system
 
 \begin{enumerate}
 \setlength{\parindent}{2ex}
-\setlength{\parskip}{0.5em}
 \item Login Page
 
 \begin{itemize}
 \setlength{\parindent}{2ex}
-\setlength{\parskip}{0.5em}
 \item Front-end
 
 Input: Accepts user ID and password input and validates the input values. \newline\hspace*{1.2ex}
@@ -351,7 +353,6 @@ Password Verification: As passwords are stored in encrypted form, the entered pa
 
 \begin{itemize}
 \setlength{\parindent}{2ex}
-\setlength{\parskip}{0.5em}
 \item Front-end
 
 Input: Collects ID, password, and other personal information from the user, verifying the validity of each field. \newline\hspace*{1.2ex}
@@ -372,7 +373,6 @@ Registration Completion Notification: Optionally sends a welcome email or SMS no
 
 \begin{itemize}
 \setlength{\parindent}{2ex}
-\setlength{\parskip}{0.5em}
 \item Front-end
 
 Profile Editing: Provides a page where users can view and edit their profile information. \newline\hspace*{1.2ex}
@@ -386,13 +386,38 @@ Identity Verification: Requires identity verification before editing personal in
 
 \end{itemize}
 
+\item User Information Table
+
+user\_id: int [pk, increment] \newline\hspace*{1.2ex}
+user\_name: varchar(255) \newline\hspace*{1.2ex}
+email: varchar(255) \newline\hspace*{1.2ex}
+password: varchar(255) \newline\hspace*{1.2ex}
+grade: int \newline\hspace*{1.2ex}
+created\_at: datetime
+
+\hspace{0.5em}{\scriptsize Table attribute can be changed in development.}
+
+\item Order Information Table
+
+order\_id: int [pk, increment] \newline\hspace*{1.2ex}
+user\_id: int [fk] \newline\hspace*{1.2ex}
+product\_id: int [fk] \newline\hspace*{1.2ex}
+quantity: int \newline\hspace*{1.2ex}
+total\_price: int [KRW] \newline\hspace*{1.2ex}
+order\_date: datetime
+
+\hspace{0.5em}{\scriptsize Table attribute can be changed in development.}
+
 \end{enumerate}
 
 \subsection{Product Management}
 
+\begin{enumerate}
+\setlength{\parindent}{2ex}
+\item Product Shopping Page
+
 \begin{itemize}
 \setlength{\parindent}{2ex}
-\setlength{\parskip}{0.5em}
 \item Front-end
 
 Product Details Page: When a user clicks on a specific product, a detailed page is displayed, including the product name, price, and description.
@@ -401,16 +426,25 @@ Product Details Page: When a user clicks on a specific product, a detailed page 
 
 New Product Registration: Required fields include product name, price, initial stock quantity, category, brand, and product description. A unique product ID is automatically assigned, with options to link the product to appropriate categories and brands. Administrator can select from existing categories and brands, with the option to add new categories or brands as needed. \newline\hspace*{1.2ex}
 Product Information Management: Provides functionality for actions such as adding stock or deleting specific products. Notifies the admin when stock reaches zero and marks the product as out of stock. Allows viewing of detailed information for selected products (name, price, description, image, stock status, etc.).
-
-
-
 \end{itemize}
+
+\item Product Information Table
+
+product\_id: int [pk, increment] \newline\hspace*{1.2ex}
+product\_name: varchar(255) \newline\hspace*{1.2ex}
+price: int [KRW] \newline\hspace*{1.2ex}
+image\_url: varchar(500) \newline\hspace*{1.2ex}
+rating: decimal(2,1) \newline\hspace*{1.2ex}
+category\_id: int [fk] 
+
+\hspace{0.5em}{\scriptsize Table attribute can be changed in development.}
+\end{enumerate}
+
 
 \subsection{Shopping Cart}
 
 \begin{itemize}
 \setlength{\parindent}{2ex}
-\setlength{\parskip}{0.5em}
 \item Front-end
 
 Add to Cart: Allows users to add products to their shopping cart via a button. \newline\hspace*{1.2ex}
@@ -432,7 +466,6 @@ View Cart: Allows users to view items currently in their cart along with the tot
 
 \begin{itemize}
 \setlength{\parindent}{2ex}
-\setlength{\parskip}{0.5em}
 \item Front-end
 
 Display Recommended Products: Shows similar products in the same category on the product page, allowing easy access to each recommended item.
@@ -447,7 +480,6 @@ Recommended Product Data Processing: Sorts products based on category hierarchy 
 
 \begin{itemize}
 \setlength{\parindent}{2ex}
-\setlength{\parskip}{0.5em}
 \item Front-end
 
 Filter Screen: Provides a filtering screen on the subcategory page where users can adjust filter options such as price, size, and type. \newline\hspace*{1.2ex}
@@ -461,11 +493,13 @@ Optimization: Enhances performance of filtering and sorting operations by settin
 
 \end{itemize}
 
-\subsection{Category Control}
+\subsection{Category Management}
 
+\begin{enumerate}
+\setlength{\parindent}{2ex}
+\item Category Control
 \begin{itemize}
 \setlength{\parindent}{2ex}
-\setlength{\parskip}{0.5em}
 \item Front-end
 
 Category Hierarchy: Displays categories in a hierarchy with main, sub, and sub-sub categories labeled as "Galaxy Cluster," "Galaxy," and "Star Cluster," respectively. \newline\hspace*{1.2ex}
@@ -476,5 +510,17 @@ Category Navigation: When a user selects a top-level category (e.g., Galaxy Clus
 Category Navigation: When a user selects Layer 1 (main category), the back-end returns a list of Layer 2 (sub-category) items based on the selected category ID. Based on the selection in Layer 2, Layer 3 (sub-sub-category) or the final product list is returned, supporting a step-by-step exploration of the category structure.
 
 \end{itemize}
+
+\item Category Information Table
+
+category\_id: int [pk, increment] \newline\hspace*{1.2ex}
+category\_name: varchar(255) \newline\hspace*{1.2ex}        
+parent\_category: int \newline\hspace*{1.2ex}
+child\_category: int 
+
+\hspace{0.5em}{\scriptsize Table attribute can be changed in development.}
+
+\end{enumerate}
+
 
 \end{document}
