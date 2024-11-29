@@ -9,7 +9,6 @@
 \usepackage{cleveref, array, booktabs, threeparttable}
 \usepackage{kotex}
 \usepackage{makecell}
-\usepackage{float}
 \usepackage{subcaption}
 \usepackage{titlesec}
 \usepackage{tabularx}
@@ -24,6 +23,8 @@
 \usepackage{comment}
 \usepackage{float}
 \usepackage{fontsize}
+\usepackage{forest}
+\usepackage{array}
 \fontsize{11pt}{13pt}\selectfont
 \def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
     T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
@@ -321,10 +322,25 @@ A lightweight Google Chrome extension that brings an all-in-one experience to we
 \end{threeparttable}
 \end{table}
 
-
 \subsection{Task Distribution}
 
--
+\begin{table}[H] 
+\renewcommand\arraystretch{1.25}
+\centering 
+\begin{threeparttable}
+    \scriptsize
+    \begin{tabular}{@{}p{3cm} p{5.3cm}@{}}
+    \toprule
+    \bfseries Name & \bfseries Task \\ 
+    \midrule
+    Geon-U Kim & Front-End Development \\ 
+    Sung-Moon Hong & Front-End Development\\ 
+    Ha-Eun Jung & Back-End Development\\ 
+    Seon-Woong Ha & Back-End Development\\ 
+    \bottomrule
+    \end{tabular}
+\end{threeparttable}
+\end{table}
 
 \section{Specification}
 
@@ -392,8 +408,7 @@ user\_id: int [pk, increment] \newline\hspace*{1.2ex}
 user\_name: varchar(255) \newline\hspace*{1.2ex}
 email: varchar(255) \newline\hspace*{1.2ex}
 password: varchar(255) \newline\hspace*{1.2ex}
-grade: int \newline\hspace*{1.2ex}
-created\_at: datetime
+grade: int
 
 \hspace{0.5em}{\scriptsize Table attribute can be changed in development.}
 
@@ -435,7 +450,8 @@ product\_name: varchar(255) \newline\hspace*{1.2ex}
 price: int [KRW] \newline\hspace*{1.2ex}
 image\_url: varchar(500) \newline\hspace*{1.2ex}
 rating: decimal(2,1) \newline\hspace*{1.2ex}
-category\_id: int [fk] 
+category\_id: int [fk] \newline\hspace*{1.2ex}
+detail information...
 
 \hspace{0.5em}{\scriptsize Table attribute can be changed in development.}
 \end{enumerate}
@@ -507,7 +523,7 @@ Category Navigation: When a user selects a top-level category (e.g., Galaxy Clus
 
 \item Back-end
 
-Category Navigation: When a user selects Layer 1 (main category), the back-end returns a list of Layer 2 (sub-category) items based on the selected category ID. Based on the selection in Layer 2, Layer 3 (sub-sub-category) or the final product list is returned, supporting a step-by-step exploration of the category structure.
+Category Navigation: When a user selects Layer 1 (parent category), the back-end returns a list of Layer 2 (child category) items based on the selected category ID. Based on the selection in Layer 2, the final product list is returned.
 
 \end{itemize}
 
@@ -515,12 +531,631 @@ Category Navigation: When a user selects Layer 1 (main category), the back-end r
 
 category\_id: int [pk, increment] \newline\hspace*{1.2ex}
 category\_name: varchar(255) \newline\hspace*{1.2ex}        
-parent\_category: int \newline\hspace*{1.2ex}
-child\_category: int 
+parent\_id: int \newline\hspace*{1.2ex}
 
 \hspace{0.5em}{\scriptsize Table attribute can be changed in development.}
 
 \end{enumerate}
 
+\section{Architecture Design \& Implementation}
+
+\subsection{Overall Architecture}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\linewidth]{System-Architecture.png}
+    \caption{System Architecture}
+    \label{fig:system-architecture}
+\end{figure}
+
+This system architecture demonstrates a web application hosted on AWS infrastructure with a React frontend, Spring Boot backend, and MySQL database. Static files, including product images and JSON data, are stored in AWS S3. The system operates within a secure VPC, utilizing EC2 instances for frontend and backend services.\newline
+
+Frontend (React) deployed on an EC2 instance, handles user interactions, and communicates with the backend via APIs.
+Backend (Spring Boot) deployed on another EC2 instance, processes business logic, retrieves data from MySQL and S3, and delivers it to the frontend in JSON format.
+Database (MySQL) stores structured data such as products, categories, users, and cart information.
+AWS S3 stores static files like product images and raw JSON data. The backend fetches, processes, and transforms these files.
+VPC ensures secure communication between all components.
+
+\subsection{Database Structure}
+
+\begin{enumerate}
+
+\item Entity Relationship Diagram
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\linewidth]{ERD-3.png}
+    \caption{Entity Relationship Diagram}
+    \label{fig:entity-relationship diagram}
+\end{figure}
+\hspace*{2ex}
+This ER diagram illustrates the database schema for a shopping system, detailing the relationships and roles of the main tables: Product, Category, User, Cart, and Order. Product table stores product details, including category, images, and specifications.
+Category table defines hierarchical product categories.
+User table stores user information like name, email, and grade.
+Cart table links users to products added to their shopping cart, including quantity.
+Order table tracks completed purchases, including product, user, total price, and date.
+Products belong to categories by category\_id.
+Carts connect users and products.
+Orders track purchased products by users.
+
+\item File Structure in AWS S3 
+
+S3 bucket "shopping-nova-1" \newline\hspace*{2.5ex}
+├ folder "image" \newline\hspace*{2.5ex}
+│     ├ product\_tv\_1\_1.png \newline\hspace*{2.5ex}
+│     ├ product\_tv\_1\_2.png \newline\hspace*{2.5ex}
+│     └ ... \newline\hspace*{2.5ex}
+├ folder "product\_data" \newline\hspace*{2.5ex}
+│     ├ product\_tv\_1.json \newline\hspace*{2.5ex}
+│     ├ product\_tv\_2.json \newline\hspace*{2.5ex}
+│     └ ...  \newline\hspace*{2.5ex}
+├ folder "user" \newline\hspace*{2.5ex}
+│     ├ user\_1.json \newline\hspace*{2.5ex}
+│     ├ user\_1\_cart.json\newline\hspace*{2.5ex}
+│     └ ...\newline\hspace*{2.5ex}
+└ category.json
+
+\end{enumerate}
+
+\subsection{Directory Organization}
+
+\begin{enumerate}
+\item Front-End
+
+\begin{tabular}{|p{0.36\linewidth}|p{0.3\linewidth}|p{0.27\linewidth}|}
+\hline
+\textbf{Directory} & \textbf{File Names} & \textbf{Modules in Use} \\
+\hline
+shoppingnova-front/ & .gitignore\newline
+appspec.yml\newline
+deploy.sh\newline
+eslint.config.js\newline
+index.html\newline
+package.json\newline
+package-lock.json\newline
+postcss.config.js\newline
+README.md\newline
+tailwind.config.ts\newline
+tsconfig.json\newline
+tsconfig.app.json\newline
+tsconfig.node.json\newline
+vite.config.ts\newline
+ & vite\newline
+postcss\newline
+tailwindcss\newline
+eslint
+\\
+\hline
+shoppingnova-front/\newline .github/workflows & main.yml & \\
+\hline
+shoppingnova-front/\newline src & index.css\newline main.tsx\newline vite-env.d.ts & react \newline react-dom \newline react-router-dom \\
+\hline
+shoppingnova-front/\newline src/assets & particle.png & \\
+\hline
+shoppingnova-front/\newline src/components & main\newline cart \newline detail \newline products & react \newline styled-components \\
+\hline
+shoppingnova-front/\newline src/components/three & Galaxy.tsx\newline GalaxyLayer.tsx \newline OrbitControls.tsx \newline ThreeCanvas.tsx & react \newline @react-three/drei \newline @react-three/fiber \\
+\hline
+shoppingnova-front/\newline src/glsl & bspiral.glsl\newline sprial.glsl \newline fragment.glsl \newline glsl.d.ts & \\
+\hline
+shoppingnova-front/\newline src/routes & Style\newline index.tsx\newline login.tsx \newline register.tsx \newline router.tsx & react-router-dom \newline styled-components \\
+\hline
+shoppingnova-front/\newline src/utils/three & color.tsx\newline rand.ts & \\
+\hline
+\end{tabular}
+\vspace{4cm}
+\item Back-End
+
+\begin{tabular}{|p{0.35\linewidth}|p{0.4\linewidth}|p{0.16\linewidth}|}
+\hline
+\textbf{Directory} & \textbf{File Names} & \textbf{Modules in Use} \\
+\hline
+ShoppingNova-BE/\newline src/java/Controller & CartController.java\newline CategoryController.java\newline ProductController.java\newline UserController.java & Controller \\
+\hline
+ShoppingNova-BE/\newline src/java/Entity/Cart & Cart.java\newline CartRepository.java\newline CartService.java & Cart \\
+\hline
+ShoppingNova-BE/\newline src/java/Entity/\newline Category & Category.java\newline CategoryRepository.java\newline CategoryService.java & Category \\
+\hline
+ShoppingNova-BE/\newline src/java/Entity/\newline Product & Product.java\newline ProductRepository.java\newline ProductService.java & Product \\
+\hline
+ShoppingNova-BE/\newline src/java/Entity/User & User.java\newline UserRepository.java\newline UserService.java & User \\
+\hline
+ShoppingNova-BE/\newline src/java/S3 & S3Service.java & S3 \\
+\hline
+\end{tabular}
+
+\end{enumerate}
+
+\subsection{Front-End}
+\begin{enumerate}
+\setlength{\parindent}{2ex}
+\item purpose
+
+We aim to create an unforgettable shopping experience using Three.js.
+Unlike typical 2D shopping websites, ShoppingNova offers users the ability to interact with products displayed as 3D objectsin the browser.
+The frontend is developed using React and React-Three-Fiber(R3F), a library that integrates Three.js into React.
+R3F allows React developers to render Three.js components without disrupting the React ecosystem.
+This application visualizes product data from the server in 3D, presenting it as stars in a space-like universe for users to explore.
+
+\item functionality
+
+Displaying categories on a galactic space view, Navigate to another galaxy-like space by moving the camera when entering a category, Render product information as stars within a subcategory, Showing detailed product information when a star is clicked, Providing functions about adding Products to shopping cart, Maning the cart. Additional features such as user sign-up and login.
+
+\item location of source code
+
+github.com/hyu-cse4006/shoppingnova-front/tree/main
+
+\item class components
+\begin{itemize}
+\item ShoppingNova-front/: This is themain directory for frontend source code of Shopping-Nova Service.\newline
+appspec.yml: The file defines deployment task and script execution steps for AWS CodeDeploy. Using CodeDeploy, we can automates post-deployment process.\newline
+eslint.config.js: The file specifies code style rules and linting for ESLint.\newline
+tsconfig.json: The file configures typescript compilation behavior.\newline
+vite.config.ts: The file defines plugins and build options of Vite. Vite optimizes build outputs.
+
+\item ShoppingNova-front/.github/workflows:
+
+main.yml: The file defines CI/CD workflows in Github Actions. We use Github Actions for automating building, deploying the code when main branch is pushed.
+
+\item ShoppingNova-front/assets: Thisdirectory contains static assets like images and other media files that mightbe used in this app
+
+\item ShoppingNova-front/src: This is themain directory for react \& typescript source code.
+
+main.tsx: This is the entry point for React application. Use react-router-dom/RouteProvider to render proper page components.\newline
+index.css: The file contains global CSS styles and integrates Tailwind CSS.\newline
+vite-env.d.ts: The file is Typescript declaration file for extending Vite's module types.
+
+\item ShoppingNova-front/src/components:Contains reusable React components grouped by functionality.
+
+\item ShoppingNova-front/src/components/main: Components for the main view of theapplication : e.g., homepage or dashboard.
+
+\item ShoppingNova-front/src/components/cart: Components related to the shopping cartview, managing cart items and checkout features.
+
+\item ShoppingNova-front/src/components/detail: Components for the product detailview, providing a detailed display of individual products.
+
+\item ShoppingNova-front/src/components/products: Contains components for displayingproduct lists, grids, or galleries.
+
+\item ShoppingNova-front/src/components/three: Components related to 3D rendering andgalaxy visualization using three.js.
+
+\item ShoppingNova-front/src/glsl:Contains WebGL shader files used by three.js for rendering custom graphics oranimations.
+
+fragment.glsl: The file define pixel-level effects in WebGL rendering. Using assets/particle.png, we define the opacity of pixel.\newline
+bspiral.glsl: The file creates sprial galaxy graphics with tens of thousands of particles.
+
+\item ShoppingNova-front/src/routes: Pagecomponents corresponding to different routes in the application.
+
+\item ShoppingNova-front/src/utils:Utility functions, constants, and helper modules to simplify repetitive tasksor manage configurations.
+
+\item ShoppingNova-front/src/utils/three:
+
+rand.ts: The file provides functions to randomize the star positoin in galaxy.\newline
+color.ts: The file contains functions for assigning colors based on star temperatures and other math utilities.
+
+\end{itemize}
+\end{enumerate}
+
+\subsection{Back-End}
+\begin{enumerate}
+\setlength{\parindent}{2ex}
+\item Controller
+
+\begin{itemize}
+\item purpose
+
+Provides APIs to deliver cart, category, product, user data stored in the database to the frontend as JSON files, formatted according to the requested type.
+
+\item functionality
+
+Cart: Allows users to add products to their shopping cart. Retrieves the list of items in a user's cart, including product details and quantities. Enables removal of specific items in the cart.\newline
+Category: Returns a list of all product categories as JSON. Retrieves all products associated with a specific category.\newline 
+Product:
+Returns all products belonging to a specific category as a single JSON file.
+Delivers detailed information of a specific product as a JSON file.
+Accepts a list of product IDs from the user's cart and returns either full or summary data for those products as JSON.
+Sorts and filters products based on price and ratings, and delivers the results as JSON. \newline
+User: Provides login functionality. Handles user sign-up by saving user details securely.
+
+\item location of source code
+
+ShoppingNova-BE/src/java/Controller
+
+\item class components
+
+Defines API endpoints.\newline Calls service layers to process data before returning JSON responses.
+
+\item where it's taken from
+
+Fetches data from the database and processes it via ProductService.
+
+\item how/why you use it
+
+Serves as the API to provide cart, category, product, user data in JSON format for frontend applications.
+\end{itemize}
+
+\item Cart Entity
+
+\begin{itemize}
+\item purpose
+
+CartService: Manages shopping cart functionalities such as adding and removing items.\newline
+Cart: Defines an entity class mapping the shopping cart data. \newline
+CartRepository: Provides database access for cart-related operations using JPA's built-in functionalities.
+
+\item functionality
+
+CartService: Implements core cart functionalities, such as fetching cart data and removing the cart.\newline
+Cart: Maps cart-related data, including user ID, product ID, and item quantity, to the database.\newline
+CartRepository: Handles CRUD operations on cart-related data.
+
+\item location of source code
+
+ShoppingNova-BE/src/java/Entity/Cart
+
+\item class components
+
+Logic for managing cart items.\newline 
+Provides connections to other services, such as UserService and ProductService, to fetch related data.
+
+\item where it's taken from
+
+Data originates from the user's session or database interactions.
+
+\item how/why you use it
+
+Used to manage shopping cart functionality, allowing users to interact with and maintain their carts seamlessly.
+
+\end{itemize}
+
+\item Category Entity
+
+\begin{itemize}
+\item purpose
+
+CategoryService: Handles logic for retrieving and organizing product categories into hierarchical structures for frontend use.\newline
+Category: Defines an entity class representing product categories, including parent-child relationships for hierarchical data.\newline
+CategoryRepository: Provides database access to fetch and manage category data using JPA.
+\item functionality
+
+CategoryService:
+Retrieves all categories, structured into parent and child categories.
+Fetches child categories for a specific parent category.
+Provides APIs to retrieve categories along with associated product counts or summaries.\newline
+Category:
+Maps category data, including category ID, name, and parent-child relationships, to the database.\newline
+CategoryRepository:
+Performs CRUD operations and custom queries for hierarchical category database.
+
+\item location of source code
+
+ShoppingNova-BE/src/java/Entity/Category
+
+\item class components
+
+Handles relationships between parent and child categories.\newline 
+Provides methods for returning structured category data for frontend display.\newline 
+Fetches product data grouped or filtered by categories.
+
+\item where it's taken from
+
+Data is stored in a relational database, with parent-child relationships established via parent\_id.
+
+\item how/why you use it
+
+Provides hierarchical category data to display menus or category lists on the frontend.
+Enables users to navigate and filter products by parent or child categories.
+Simplifies browsing by organizing products into logical groupings.
+
+\end{itemize}
+
+\item Product Entity
+
+\begin{itemize}
+\item purpose
+
+ProductService: Manages the transfer of product information in JSON format from S3 to MySQL DB and provides essential JPA-based services.\newline
+Product: Defines an entity class mapping the product information retrieved from S3.\newline
+ProductRepository: Provides database access using JPA's built-in functionalities.
+
+\item functionality
+
+ProductService: Retrieves product data from S3 and stores it in the database. Implements basic CRUD operations and data processing logic using JPA.\newline
+Product: Maps data to the Product entity.\newline
+ProductRepository: Handles CRUD operations on the database.
+
+\item location of source code
+
+ShoppingNova-BE/src/java/Entity/Product
+
+\item class components
+
+Logic for saving data to the database. \newline Invokes S3Service to fetch data from S3.
+
+\item where it's taken from
+
+Data originates from JSON files stored in S3 and is saved to MySQL DB.
+
+\item how/why you use it
+
+Facilitates the storage and processing of product data for further use in APIs or business logic.
+
+\end{itemize}
+
+\item User Entity
+
+\begin{itemize}
+\item purpose
+
+UserService: Manages user-related data and operations, including registration, authentication, and profile management.\newline
+User: Defines an entity class mapping user data stored in the database.\newline
+UserRepository: Provides database access for user-related operations using JPA.
+
+\item functionality
+
+UserService: Handles user registration, login, and other user-specific features.
+User: Maps user data, such as username, password, and others to the database.\newline
+UserRepository: Handles CRUD operations for user-related database.
+
+\item location of source code
+
+ShoppingNova-BE/src/java/Entity/User
+
+\item class components
+
+Logic for user registration, login, and profile management.
+
+\item where it's taken from
+
+Data originates from user input or database interactions.
+
+\item how/why you use it
+
+Used to manage user data and authentication, ensuring a personalized and secure shopping experience.
+
+\end{itemize}
+
+\item S3 
+
+\begin{itemize}
+\item purpose
+
+Provides functionalities for interacting with AWS S3, such as uploading, downloading, extracting file lists, and generating URLs.
+
+\item functionality
+
+File List Extraction: Used by ProductService to retrieve all product information.\newline
+URL Conversion: Converts image data into URLs (planned for API extension).\newline
+Upload/Download: Not implemented in the current project.
+
+\item location of source code
+
+ShoppingNova-BE/src/java/S3
+
+\item class components
+
+Methods for interacting with AWS S3.\newline 
+Utilizes AWS SDK for S3 operations.
+
+\item where it's taken from
+
+Pulls data from the AWS S3 bucket.
+
+\item how/why you use it
+
+Supports product data management and generates image URLs for frontend consumption.
+
+\end{itemize}
+
+\end{enumerate}
+
+\subsection{Database}
+\begin{enumerate}
+\item purpose
+
+Serve as a centralized storage system that integrates data from AWS S3 and organizes it into relational tables for efficient querying and API responses.
+Transform JSON and PNG files stored in S3 into structured data for backend processing and frontend consumption.
+
+\item functionality
+
+Data Extraction:
+Retrieve JSON data and image files from AWS S3.
+Extract and parse the JSON data into database tables (e.g., Product, Cart, Category, User).\newline
+Data Transformation and Storage:
+Map S3 data to relational tables using JPA.
+Store product image metadata in the database while associating physical images with S3 URLs.\newline
+Query and Process:
+Utilize SQL queries and JPA to manipulate and retrieve relational data.
+Organize hierarchical relationships (e.g., parent-child categories) and join related tables (e.g., Cart with User and Product).\newline
+API Integration:
+Convert relational table data back into JSON format for API responses.
+Ensure efficient filtering, sorting, and aggregation of data before API delivery.
+
+\item where it's taken from
+
+Primary Data Source: AWS S3 (JSON files and PNG images).\newline
+Relational Database: Organized into tables (Product, Cart, Category, User) for efficient storage and processing.\newline
+S3Service: Handles fetching raw data from S3 and passing it to backend services for processing.
+
+\item how/why you use it
+
+Frontend API Responses:
+Convert complex, relational data into simplified JSON for frontend use.
+Provide optimized APIs for category navigation, product display, cart management, and user data.\newline
+Data Organization and Efficiency:
+Transform unstructured JSON into a structured database schema, enabling efficient querying and sorting.
+Maintain image metadata and S3 URLs for frontend image delivery without unnecessary duplication.
+
+\end{enumerate}
+
+\section{Use Cases}
+
+\subsection{Use Case 1 - Login}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\linewidth]{UseCase1.png}
+    \caption{Use Case 1}
+    \label{fig:use-case-1}
+\end{figure}
+
+\begin{enumerate}
+\setlength{\parindent}{2ex}
+\item Primary Actor
+
+Web Customer (Registered Customer or New Customer)
+\item Stakeholders and Interests
+
+Web Customer: Wants to log into the system or register for an account to access personalized services, such as viewing cart items and enjoying special offers.
+
+System: Aims to securely authenticate customers and allow new customers to register, ensuring personalized experiences.
+\item Preconditions
+
+The customer is on the login or registration page of the website.
+The system has a valid user database for both registered customers and new customer registration.
+\item Main Scenario
+
+1. Web Customer accesses the Login page of the system.
+System presents the login form asking for username and password.
+
+2. Web Customer (if already registered) enters their username and password.
+System authenticates the credentials by checking the authentication data.
+
+3. If the credentials are valid:
+System grants the Registered Customer access and redirects them to their personalized dashboard or home page.
+
+4. If the Web Customer is a New Customer:
+Web Customer can choose to Register a new account.
+System presents a registration form to input necessary details such as name, email, password, and other relevant information.
+
+5. The New Customer completes the registration form and submits the data.
+System checks the provided information for validity (e.g., ensures the email is not already used).
+
+6. If registration is successful:
+System creates a new customer profile and logs in the New Customer, redirecting them to their personalized home page.
+
+\item Special Requirements
+
+The System must ensure security by encrypting passwords and securely handling authentication requests.
+The registration form should validate customer input, such as email format and password strength.
+The login and registration process should be responsive, user-friendly, and fast to minimize abandonment.
+
+\item Assumptions
+
+The system has an existing customer database for authentication and account creation.
+The Web Customer has internet access and is able to use a web browser to interact with the login and registration process.
+
+\end{enumerate}
+
+\subsection{Use Case 2 - Search Product}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{UseCase2.png}
+    \caption{Use Case 2}
+    \label{fig:use-case-2}
+\end{figure}
+
+\begin{enumerate}
+\setlength{\parindent}{2ex}
+\item Primary Actor
+
+Web Customer (including both Registered Customer and New Customer)
+\item Stakeholders and Interests
+
+Web Customer: Wants to search for products and view detailed information to make an informed purchasing decision. 
+
+System: Aims to provide accurate product information and enhance the customer experience.
+\item Preconditions
+
+The customer is logged into the website and has permission to view products.
+The system should have a well-structured category and product catalog to provide relevant information.
+\item Main Scenario
+
+1. Web Customer accesses the system and views the parent category page.
+System provides a list of available parent categories for the customer to browse.
+
+2. Web Customer selects a desired parent category.
+System displays a list of child categories under the selected parent category.
+
+3. Web Customer selects a desired child category.
+System displays a list of products available in the selected child category.
+
+4. Web Customer selects a desired product.
+System displays the detailed product information.
+
+5. Web Customer reviews the product information and makes a purchasing decision.
+\item Special Requirement
+
+The Web Customer should be able to view product details clearly, and the UI should be intuitive to help customers easily navigate through categories and products.
+Product information should include price, detailed description, reviews, and availability.
+\item Assumptions
+
+The system maintains an up-to-date product catalog and clearly defines the category structure.
+
+\end{enumerate}
+
+\subsection{Use Case 3 - Cart}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\linewidth]{UseCase3.png}
+    \caption{Use Case 3}
+    \label{fig:use-case-3}
+\end{figure}
+
+\begin{enumerate}
+\setlength{\parindent}{2ex}
+\item Primary Actor
+
+Registered Customer
+\item Stakeholders and Interests
+
+Registered Customer: Wants to view product details, add products to the cart, delete items from the cart, and review the cart contents to make a purchase decision.
+
+System: Aims to display product details, manage the shopping cart, and ensure customers are authenticated to securely perform actions like adding or removing items from the cart.
+\item Preconditions
+
+Registered Customer must be logged in and authenticated to perform actions such as adding products to the cart or deleting items from it.
+The system must have a properly functioning product catalog and shopping cart management system.
+\item Main Scenario 1\newline
+View Product Information and Add Product to Cart
+
+1. Registered Customer selects a product from the product list and views the product details page.
+System displays the detailed information of the selected product.
+
+2. Registered Customer decides to add the product to the shopping cart.
+System provides the Add Product to Cart feature.
+
+3. Upon selecting Add Product to Cart, System prompts the customer to authenticate before adding the product to the cart.
+Authenticate: The customer is required to log in, and after successful authentication, the product can be added to the shopping cart.
+
+4. After successful authentication, System adds the selected product to the Registered Customer's shopping cart and either redirects to the cart page or updates the current page to reflect the added product.
+
+\item Main Scenario 2\newline
+View Cart and Delete Product from Cart
+
+1. Registered Customer selects the View Cart option to review the items in their cart.
+System displays the list of products currently in the customer's shopping cart.
+
+2. Registered Customer decides to delete an item from the cart.
+System provides the option to delete the product from the cart.
+
+3. Upon selecting Delete Product from Cart, System prompts the customer to authenticate before deleting the item.
+Authenticate: The customer is required to log in, and after successful authentication, the product can be deleted from the cart.
+
+4. After successful authentication, System removes the selected product from the Registered Customer's shopping cart and updates the cart page accordingly.
+\item Special Requirements
+
+System must securely handle the Authenticate process to ensure customers' accounts are properly protected during actions like adding or deleting items in the cart.
+The cart should reflect real-time updates when products are added or removed.
+Authenticate should be quick and user-friendly to provide a seamless experience for customers.
+\item Assumptions
+
+Registered Customer already has an account and must log in to use cart-related features (adding or removing products).
+System should have a functional shopping cart feature and ensure that product additions and deletions are immediately reflected in the cart.
+
+\end{enumerate}
+
+\section{Discussion}
+\hspace*{1.2ex}
+During the project, we faced several challenges, including difficulties in designing the database structure. The process of collecting data and creating the ERD was complex, and we had to revise the ERD three times. This resulted in significant delays in uploading data to the S3 bucket. Additionally, implementing the database in Spring proved challenging due to issues with permissions and policies while pulling data from S3. We also faced difficulties in passing data to the frontend via APIs in JSON format and ensuring proper communication between the backend and frontend. Finally, communication issues within the team, especially with frequent changes in the frontend's technical feasibility, led to frequent changes in required APIs. As a result, the creation and testing of APIs were delayed. These challenges highlighted the importance of clearer communication and better alignment between the teams to improve efficiency and avoid delays.
 
 \end{document}
