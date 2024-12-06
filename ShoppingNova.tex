@@ -41,7 +41,7 @@
 {\footnotesize Group Name: ITCT}
 }
 
-\author{\IEEEauthorblockN{1\textsuperscript{st} Hong-Sung Mun}
+\author{\IEEEauthorblockN{1\textsuperscript{st} Sung-Mun Hong}
 \IEEEauthorblockA{\textit{dept. Computer Softwareline} \\
 \textit{HanYang Univ.}\\
 Seoul, Republic of Korea\\
@@ -350,6 +350,13 @@ A lightweight Google Chrome extension that brings an all-in-one experience to we
 \setlength{\parindent}{2ex}
 \item Login Page
 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{Login-Page.png}
+    \caption{Login Page}
+    \label{fig:Login Page}
+\end{figure}
+
 \begin{itemize}
 \setlength{\parindent}{2ex}
 \item Front-end
@@ -358,6 +365,7 @@ Input: Accepts user ID and password input and validates the input values. \newli
 Error Handling: If the user ID or password does not exist in the database, prompts the user to re-enter their credentials.\newline\hspace*{1.2ex}
 DB Query Transmission: Sends the input values as a query to the database to retrieve user information for use in subsequent processes.
 
+\vspace{0.6cm}
 \item Back-end
 
 Authentication: Compares the input user ID and password with the stored values in the database and allows login if they match. \newline\hspace*{1.2ex}
@@ -366,6 +374,13 @@ Password Verification: As passwords are stored in encrypted form, the entered pa
 \end{itemize}
 
 \item Sign-Up Page
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{Sign-Up Page.png}
+    \caption{Sign-Up Page}
+    \label{fig:Sign-Up Page}
+\end{figure}
 
 \begin{itemize}
 \setlength{\parindent}{2ex}
@@ -431,6 +446,27 @@ order\_date: datetime
 \setlength{\parindent}{2ex}
 \item Product Shopping Page
 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{Product-Page.png}
+    \caption{Product List Page}
+    \label{fig:Product List Page}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{Product-Detail-1.png}
+    \caption{Product Detail Page 1}
+    \label{fig:Product Detail Page 1}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{Product-Detail-2.png}
+    \caption{Product Detail Page 2}
+    \label{fig:Product Detail Page 2}
+\end{figure}
+
 \begin{itemize}
 \setlength{\parindent}{2ex}
 \item Front-end
@@ -458,6 +494,13 @@ detail information...
 
 
 \subsection{Shopping Cart}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{Shopping-Cart.png}
+    \caption{Shopping Cart Page}
+    \label{fig:Shopping Cart Page}
+\end{figure}
 
 \begin{itemize}
 \setlength{\parindent}{2ex}
@@ -491,7 +534,7 @@ Display Recommended Products: Shows similar products in the same category on the
 Recommended Product Data Processing: Sorts products based on category hierarchy to include models from the same category but with different versions in the recommendation list. For example, if a user views a monitor released in 2020, the backend may recommend a 2024 version as a "latest model" in the recommendations.
 
 \end{itemize}
-
+\vspace{1cm}
 \subsection{Product Filtering}
 
 \begin{itemize}
@@ -511,6 +554,13 @@ Optimization: Enhances performance of filtering and sorting operations by settin
 
 \subsection{Category Management}
 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{Category.png}
+    \caption{Category Page}
+    \label{fig:Category Page}
+\end{figure}
+
 \begin{enumerate}
 \setlength{\parindent}{2ex}
 \item Category Control
@@ -526,7 +576,7 @@ Category Navigation: When a user selects a top-level category (e.g., Galaxy Clus
 Category Navigation: When a user selects Layer 1 (parent category), the back-end returns a list of Layer 2 (child category) items based on the selected category ID. Based on the selection in Layer 2, the final product list is returned.
 
 \end{itemize}
-
+\vspace{0.5cm}
 \item Category Information Table
 
 category\_id: int [pk, increment] \newline\hspace*{1.2ex}
@@ -538,7 +588,7 @@ parent\_id: int \newline\hspace*{1.2ex}
 \end{enumerate}
 
 \section{Architecture Design \& Implementation}
-
+\vspace{0.5cm}
 \subsection{Overall Architecture}
 
 \begin{figure}[H]
@@ -550,13 +600,15 @@ parent\_id: int \newline\hspace*{1.2ex}
 
 This system architecture demonstrates a web application hosted on AWS infrastructure with a React frontend, Spring Boot backend, and MySQL database. Static files, including product images and JSON data, are stored in AWS S3. The system operates within a secure VPC, utilizing EC2 instances for frontend and backend services.\newline
 
-Frontend (React) deployed on an EC2 instance, handles user interactions, and communicates with the backend via APIs.
-Backend (Spring Boot) deployed on another EC2 instance, processes business logic, retrieves data from MySQL and S3, and delivers it to the frontend in JSON format.
+Frontend (React) deployed on an EC2 instance, handles user interactions, and communicates with the backend via APIs.\newline\hspace*{2.5ex}
+Backend (Spring Boot) deployed on another EC2 instance, processes business logic, retrieves data from MySQL and S3, and delivers it to the frontend in JSON format.\newline\hspace*{2.5ex}
 Database (MySQL) stores structured data such as products, categories, users, and cart information.
-AWS S3 stores static files like product images and raw JSON data. The backend fetches, processes, and transforms these files.
+AWS S3 stores static files like product images and raw JSON data. The backend fetches, processes, and transforms these files.\newline\hspace*{2.5ex}
 VPC ensures secure communication between all components.
 
+\vspace{3cm}
 \subsection{Database Structure}
+\vspace{0.2cm}
 
 \begin{enumerate}
 
@@ -594,6 +646,30 @@ S3 bucket "shopping-nova-1" \newline\hspace*{2.5ex}
 │     └ ...\newline\hspace*{2.5ex}
 └ category.json
 
+\vspace{2cm}
+\item Data Collection \& Processing
+
+\begin{itemize}
+\setlength{\parindent}{2ex}
+
+\item Web Scraping by Listly (Chrome Extension)
+
+For the LG Electronics shopping mall's new UI application project, product information, particularly for TVs and refrigerators, was scraped from the LG Electronics shopping mall webpage using Listly (a Chrome Extension) and saved as an Excel file.
+
+\item Data Cleaning \& Wrangling by Excel (Manually)
+
+The scraped data was manually cleaned and wrangled using Excel. Rows with null values in essential fields were removed, and only the necessary columns were retained.
+
+\item Converting \& Formatting by Python (File I/O)
+
+The Excel data was converted into JSON format using Python. Additionally, image URLs in AVIF format were processed and converted to PNG format with properly formatted file names.
+
+\item Uploading folders (json \& image) to S3 bucket
+
+Finally, the image, product\_data, and users folders, along with the category.json file, were uploaded to an S3 bucket.
+
+\end{itemize}
+
 \end{enumerate}
 
 \subsection{Directory Organization}
@@ -601,7 +677,8 @@ S3 bucket "shopping-nova-1" \newline\hspace*{2.5ex}
 \begin{enumerate}
 \item Front-End
 
-\begin{tabular}{|p{0.36\linewidth}|p{0.3\linewidth}|p{0.27\linewidth}|}
+{\small
+\begin{tabular}{|p{0.36\linewidth}|p{0.3\linewidth}|p{0.24\linewidth}|}
 \hline
 \textbf{Directory} & \textbf{File Names} & \textbf{Modules in Use} \\
 \hline
@@ -631,6 +708,12 @@ shoppingnova-front/\newline src & index.css\newline main.tsx\newline vite-env.d.
 \hline
 shoppingnova-front/\newline src/assets & particle.png & \\
 \hline
+\end{tabular}
+}
+
+{\small
+\begin{tabular}{|p{0.36\linewidth}|p{0.3\linewidth}|p{0.2\linewidth}|}
+\hline
 shoppingnova-front/\newline src/components & main\newline cart \newline detail \newline products & react \newline styled-components \\
 \hline
 shoppingnova-front/\newline src/components/three & Galaxy.tsx\newline GalaxyLayer.tsx \newline OrbitControls.tsx \newline ThreeCanvas.tsx & react \newline @react-three/drei \newline @react-three/fiber \\
@@ -642,26 +725,46 @@ shoppingnova-front/\newline src/routes & Style\newline index.tsx\newline login.t
 shoppingnova-front/\newline src/utils/three & color.tsx\newline rand.ts & \\
 \hline
 \end{tabular}
-\vspace{4cm}
+}
 \item Back-End
 
-\begin{tabular}{|p{0.35\linewidth}|p{0.4\linewidth}|p{0.16\linewidth}|}
+{\small
+\begin{tabular}{|p{0.31\linewidth}|p{0.37\linewidth}|p{0.22\linewidth}|}
 \hline
 \textbf{Directory} & \textbf{File Names} & \textbf{Modules in Use} \\
 \hline
-ShoppingNova-BE/\newline src/java/Controller & CartController.java\newline CategoryController.java\newline ProductController.java\newline UserController.java & Controller \\
+ShoppingNova-BE/\newline src/java/Controller & CartController.java\newline CategoryController.java\newline ProductController.java\newline UserController.java & spring-web \newline jackson-databind\newline aws-java-sdk-s3 \newline java.util \newline
+jackson-core\\
 \hline
-ShoppingNova-BE/\newline src/java/Entity/Cart & Cart.java\newline CartRepository.java\newline CartService.java & Cart \\
+ShoppingNova-BE/\newline src/java/Entity/Cart & Cart.java\newline CartRepository.java\newline CartService.java & spring-data-jpa\newline jakarta-persistence\newline
+spring-context\newline spring-tx \newline
+java.util \newline java.time \\
 \hline
-ShoppingNova-BE/\newline src/java/Entity/\newline Category & Category.java\newline CategoryRepository.java\newline CategoryService.java & Category \\
+ShoppingNova-BE/\newline src/java/Entity/\newline Category & Category.java\newline CategoryRepository.java\newline CategoryService.java & spring-data-jpa \newline
+spring-web\newline
+jackson-databind\newline
+lombok \\
 \hline
-ShoppingNova-BE/\newline src/java/Entity/\newline Product & Product.java\newline ProductRepository.java\newline ProductService.java & Product \\
+ShoppingNova-BE/\newline src/java/Entity/\newline Product & Product.java\newline ProductRepository.java\newline ProductService.java & spring-data-jpa \newline
+spring-web\newline
+jackson-databind\newline
+lombok \newline spring-tx \\
 \hline
-ShoppingNova-BE/\newline src/java/Entity/User & User.java\newline UserRepository.java\newline UserService.java & User \\
-\hline
-ShoppingNova-BE/\newline src/java/S3 & S3Service.java & S3 \\
+ShoppingNova-BE/\newline src/java/Entity/User & User.java\newline UserRepository.java\newline UserService.java & spring-web \newline jackson-databind\newline aws-java-sdk-s3 \newline java.util \newline
+jackson-core \\
 \hline
 \end{tabular}
+}
+
+{\small
+\begin{tabular}{|p{0.31\linewidth}|p{0.3\linewidth}|p{0.25\linewidth}|}
+\hline
+ShoppingNova-BE/\newline src/java/Initializer & DataInitializer.java \newline WebConfig.java & aws-java-sdk-s3 \newline spring-web\newline spring-context\newline spring-data-jpa\newline jackson-databind\newline jackson-core\newline  java-util  \\
+\hline
+ShoppingNova-BE/\newline src/java/S3 & S3Service.java & aws-java-sdk-s3 \newline java-util-stream \newline java-io \newline aws-sdk-core \\
+\hline
+\end{tabular}
+}
 
 \end{enumerate}
 
@@ -1156,6 +1259,6 @@ System should have a functional shopping cart feature and ensure that product ad
 
 \section{Discussion}
 \hspace*{1.2ex}
-During the project, we faced several challenges, including difficulties in designing the database structure. The process of collecting data and creating the ERD was complex, and we had to revise the ERD three times. This resulted in significant delays in uploading data to the S3 bucket. Additionally, implementing the database in Spring proved challenging due to issues with permissions and policies while pulling data from S3. We also faced difficulties in passing data to the frontend via APIs in JSON format and ensuring proper communication between the backend and frontend. Finally, communication issues within the team, especially with frequent changes in the frontend's technical feasibility, led to frequent changes in required APIs. As a result, the creation and testing of APIs were delayed. These challenges highlighted the importance of clearer communication and better alignment between the teams to improve efficiency and avoid delays.
+During the project, we faced several challenges. Designing the database structure was complex, as the process of collecting data and creating the Entity-Relationship Diagram (ERD) required three revisions, leading to significant delays in uploading data to the S3 bucket. Implementing the database in Spring was also challenging due to permissions and policy-related issues when retrieving data from S3. Additionally, deploying the backend on an EC2 instance posed difficulties, as the t2.micro instance's low performance and lack of query optimization caused frequent server downtimes, which were temporarily resolved using a swap file. Finally, communication issues within the team, especially due to frequent changes in the frontend's technical feasibility, resulted in constant modifications to the required APIs, delaying their creation and testing. These challenges highlighted the importance of clearer communication and better team alignment to improve efficiency and minimize delays.
 
 \end{document}
