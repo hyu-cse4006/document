@@ -248,9 +248,9 @@ React-three-fiber(R3F) abstracts Three.js’s capabilities into React components
 \begin{itemize}
 \setlength{\parindent}{2ex}
 \setlength{\parskip}{0.5em}
-\item PostgreSQL
+\item MySQL
 
-PostgreSQL is an open-source relational database management system known for its high stability and data integrity. In the shopping mall project, PostgreSQL is used to efficiently store and manage structured data such as products, users, and order information. It supports transaction management and adheres to ACID (Atomicity, Consistency, Isolation, Durability) properties, ensuring data reliability. Optimized for handling large volumes of data, PostgreSQL performs well in large-scale applications.
+MySQL is a relational database management system (RDBMS) that is open-source, free, and suitable for both small and large applications. It is known for its speed, reliability, scalability, and ease of use. Unlike some RDBMS systems, MySQL does not come with built-in GUI management tools, so users typically rely on command-line interfaces or front-end desktop software and web applications to create, manage, back up, and interact with databases. The official MySQL frontend tool, MySQL Workbench, developed by Oracle, is freely available for use. MySQL is cross-platform and adheres to the ANSI SQL standard.
 
 \end{itemize}
 
@@ -343,123 +343,120 @@ A lightweight Google Chrome extension that brings an all-in-one experience to we
 \end{table}
 
 \section{Specification}
-
-\subsection{User Account Management}
-
-\begin{enumerate}
-\setlength{\parindent}{2ex}
-\item Login Page
-
+\subsection{Login Page}
 \begin{figure}[H]
-    \centering
+    \centering    
     \includegraphics[width=0.8\linewidth]{Login-Page.png}
     \caption{Login Page}
     \label{fig:Login Page}
 \end{figure}
 
-\begin{itemize}
+\begin{enumerate}
 \setlength{\parindent}{2ex}
-\item Front-end
+\setlength{\parskip}{0.5em}
+\item Page Component
 
-Input: Accepts user ID and password input and validates the input values. \newline\hspace*{1.2ex}
-Error Handling: If the user ID or password does not exist in the database, prompts the user to re-enter their credentials.\newline\hspace*{1.2ex}
-DB Query Transmission: Sends the input values as a query to the database to retrieve user information for use in subsequent processes.
+There are 2 input fields and 3 buttons in this page. Email input field is for the user to input their email address, and Password input field is for the user to input their account password. Login button initiates the login process by sending the entered email and password to the database for vertification. Forgot Password Button redirects the user to the password reset page. Create Account Button redirects the user to the sign-up page to create a new account.
 
-\vspace{0.6cm}
-\item Back-end
+\item UI Configuration
 
-Authentication: Compares the input user ID and password with the stored values in the database and allows login if they match. \newline\hspace*{1.2ex}
-Password Verification: As passwords are stored in encrypted form, the entered password is processed through the same encryption and compared against the stored hash for verification.
+The Logo "SHOPPINGNOVA" is displayed at the top of the page. Below the logo, frame for login is shown that contains the Email and Password input fields, arranged vertically. Forgot Password and Create Account Buttons are positioned horizontally and below the input fields inside the frame. 
 
-\end{itemize}
+\item Functionality
 
-\item Sign-Up Page
+When User enters their Email and Password into the respective fields and clicks the login button, the input values are sent as a query to the database to retrieve user information. The database checks of the provided Email and Password match the stored values. If the credentials match, the user is redirected to the main page. If they don't match, a popup displayes an error message indicating login failure. 
 
+\item Input Value format
+
+Email should follow a valid email format and not exceed 255 characters in length. 
+Password must be between 5 and 255 characters in length.
+\end{enumerate}
+
+\subsection{Sign-Up Page}
 \begin{figure}[H]
-    \centering
+    \centering    
     \includegraphics[width=0.8\linewidth]{Sign-Up Page.png}
     \caption{Sign-Up Page}
     \label{fig:Sign-Up Page}
 \end{figure}
 
-\begin{itemize}
+\begin{enumerate}
 \setlength{\parindent}{2ex}
-\item Front-end
+\setlength{\parskip}{0.5em}
+\item Page Component
 
-Input: Collects ID, password, and other personal information from the user, verifying the validity of each field. \newline\hspace*{1.2ex}
-Error Handling: Checks for type errors, duplicates, and other input inconsistencies.
+There are 4 input fields and 2 buttons on this page. The Email input field allows users to enter their email address, while the Password input field allows users to enter their account password. The Confirm Password input field is used to verify that the entered password matches. The Username input field allows users to enter their username. There is a Create Account Button that initiates the account creation process by sending the entered details to the database for validation, and a Return to Login Button that redirects the user back to the login page.
 
-\item Back-end
+\item UI Configuration
 
-Unique User Number Assignment: Automatically generates a unique user number (user\_number) for each new user. \newline\hspace*{1.2ex}
-ID Duplication Check: Checks if the input user ID (user\_id) already exists. If duplicate, returns an error message and halts registration. \newline\hspace*{1.2ex}
-Password Security: Encrypts the password for storage, enforcing a minimum length and character combination requirements (e.g., at least 8 characters, including numbers and special characters). \newline\hspace*{1.2ex}
-Date of Birth Format Check: Validates the format of the date of birth input and returns an error if there is a format issue. \newline\hspace*{1.2ex}
-Email and Phone Number Validation: Validates the format of the email and phone number; if invalid, returns an error message. \newline\hspace*{1.2ex}
-Registration Completion Notification: Optionally sends a welcome email or SMS notification to confirm successful registration.
+The logo "SHOPPINGNOVA" is displayed at the top of the page. Below the logo, a frame is shown containing the input fields arranged vertically: Email, Password, Confirm Password, and Username. The Create Account Button and Return to Login Button are positioned horizontally below the input fields within the frame.
 
-\end{itemize}
+\item Functionality
 
-\item User Page
+When the user enters their Email, Password, Confirm Password, and Username and clicks the Create Account Button, the input values are sent to the database for validation. If all fields are properly formatted and meet the requirements, the account is successfully created. If there are any errors, a popup displays error messages indicating what needs to be corrected. The page also checks for duplicate user IDs, encrypts the password securely, and validates the format of email, phone numbers, and date of birth. If all input is valid, the database generates a unique user number and securely stores the password. Optionally, a welcome email or SMS notification may be sent to confirm successful registration. If the user clicks the Return to Login Button, they are redirected to the login page.
 
-\begin{itemize}
-\setlength{\parindent}{2ex}
-\item Front-end
+\item Input Value format
 
-Profile Editing: Provides a page where users can view and edit their profile information. \newline\hspace*{1.2ex}
-View Purchase History: Provides a page where users can view their purchase history, with an option to filter by date.
-
-\item Back-end
-
-Load Purchase History: Retrieves the user’s purchase history from the database. \newline\hspace*{1.2ex}
-Profile Editing: Allows users to update personal information, such as name, phone number, and email. Updated information is validated before updating the database. \newline\hspace*{1.2ex}
-Identity Verification: Requires identity verification before editing personal information, supporting SMS or email verification based on registration details.
-
-\end{itemize}
-
-\item User Information Table
-
-user\_id: int [pk, increment] \newline\hspace*{1.2ex}
-user\_name: varchar(255) \newline\hspace*{1.2ex}
-email: varchar(255) \newline\hspace*{1.2ex}
-password: varchar(255) \newline\hspace*{1.2ex}
-grade: int
-
-\hspace{0.5em}{\scriptsize Table attribute can be changed in development.}
-
-\item Order Information Table
-
-order\_id: int [pk, increment] \newline\hspace*{1.2ex}
-user\_id: int [fk] \newline\hspace*{1.2ex}
-product\_id: int [fk] \newline\hspace*{1.2ex}
-quantity: int \newline\hspace*{1.2ex}
-total\_price: int [KRW] \newline\hspace*{1.2ex}
-order\_date: datetime
-
-\hspace{0.5em}{\scriptsize Table attribute can be changed in development.}
-
+The Email must follow a valid email format and not exceed 255 characters in length. The Password must be between 5 and 255 characters in length, and the Confirm Password must match the entered Password exactly. The Username must be between 1 to 255 characters if entered in English, or 1 to 85 characters if entered in Korean.
 \end{enumerate}
 
-\subsection{Product Management}
+\subsection{Main Page (Category Page)}
+\begin{figure}[H]
+    \centering    \includegraphics[width=0.8\linewidth]{Category.png}
+    \caption{Category Page}
+    \label{fig:Category Page}
+\end{figure}
 
 \begin{enumerate}
 \setlength{\parindent}{2ex}
-\item Product Shopping Page
+\setlength{\parskip}{0.5em}
+\item Page Component
 
+After logging in, four category buttons, a Cart button, and a Home indicator are displayed. Before logging in, the Cart button is replaced by a "Sign In" button.
+
+\item UI Configuration
+
+Below the logo "SHOPPINGNOVA," a glowing, revolving galaxy is displayed. The categories and buttons are fixed to this galaxy and rotate along with it. At the top-left, the "HOME" label is visible, indicating that no higher-level page exists. On the top-right, the Cart button is present, indicating the user’s cart.
+
+\item Functionality
+
+When the user clicks on any of the rotating category buttons below the revolving galaxy, they are smoothly navigated into the corresponding page of subcategories. For example, selecting the "Galaxy" category takes the user to the "Galaxy" subcategory, as the back-end retrieves and displays the corresponding Layer 2 (child) categories. Selecting a Layer 2 subcategory reveals the final Layer 3 - product cluster. The Cart button redirects logged-in users to their cart page. If the user is not logged in, the button is replaced by the "Sign In" button.
+
+\end{enumerate}
+
+\subsection{Product Cluster Page}
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\linewidth]{Product-Page.png}
-    \caption{Product List Page}
-    \label{fig:Product List Page}
+    \caption{Product Cluster Page}
+    \label{fig:Product Cluster Page}
 \end{figure}
 
+\begin{enumerate}
+\setlength{\parindent}{2ex}
+\setlength{\parskip}{0.5em}
+\item Page Component
+
+This page includes a Page Layer indicator, a Cart Button, and a product information popup. The Page Layer indicator helps users track their navigation path, while the Cart Button allows quick access to the cart. Additionally, users can interact with product stars, which represent individual products displayed within the galaxy interface.
+
+\item UI Configuration
+
+At the top-left corner of the page, the Page Layer indicator displays the current navigation path, such as HOME > TV > ULTRA HD, helping users understand the hierarchy of categories they have navigated through. The Cart Button is positioned at the top-right corner, providing a direct link to the cart page. Below the logo, a galaxy with rotating product stars is displayed. Users can also interact with product stars to view a popup containing basic product information, including the product name, price, rating, and number of reviews.
+
+\item Functionality
+
+The Page Layer indicator allows users to track their navigation path and return to any previous layer by clicking the corresponding category. For instance, clicking TV will redirect the user to the TV category page, while clicking HOME will navigate back to the main page. The Cart Button redirects the user to the cart page. Users can rotate the galaxy and product stars in 360 degrees and zoom in or out for a better view. When hovering over a product star, a popup appears showing basic product details such as name, price, rating, and number of reviews. Clicking on a product star focuses the view on the selected product and navigates to its detailed product page.
+
+\end{enumerate}
+
+
+\subsection{Product Detail Page}
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\linewidth]{Product-Detail-1.png}
     \caption{Product Detail Page 1}
     \label{fig:Product Detail Page 1}
 \end{figure}
-
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\linewidth]{Product-Detail-2.png}
@@ -467,34 +464,25 @@ order\_date: datetime
     \label{fig:Product Detail Page 2}
 \end{figure}
 
-\begin{itemize}
+\begin{enumerate}
 \setlength{\parindent}{2ex}
-\item Front-end
+\setlength{\parskip}{0.5em}
+\item Page Component
 
-Product Details Page: When a user clicks on a specific product, a detailed page is displayed, including the product name, price, and description.
+The page contains a Page Layer indicator, a Cart Button, a product detail information frame, and a Close Button. The Page Layer indicator helps users track their navigation path, while the Cart Button allows easy access to the user's shopping cart. The product detail frame displays detailed information about the selected product, and the Close Button enables users to exit the detail view.
 
-\item Back-end
+\item UI Configuration
 
-New Product Registration: Required fields include product name, price, initial stock quantity, category, brand, and product description. A unique product ID is automatically assigned, with options to link the product to appropriate categories and brands. Administrator can select from existing categories and brands, with the option to add new categories or brands as needed. \newline\hspace*{1.2ex}
-Product Information Management: Provides functionality for actions such as adding stock or deleting specific products. Notifies the admin when stock reaches zero and marks the product as out of stock. Allows viewing of detailed information for selected products (name, price, description, image, stock status, etc.).
-\end{itemize}
+The Page Layer indicator is positioned in the top-left corner, and the Cart Button is located in the top-right corner. Below the logo, the selected product star is prominently displayed at the center of a galaxy-themed background. On the right side, there is a scrollable product detail frame that displays various product specifications, such as name, price, release year, rating, number of reviews, weight, and category-specific details like resolution for TVs or energy efficiency ratings for refrigerators. The frame includes a Cart Button for adding the product to the user's shopping cart and a Close Button on the left side to close the detail view.
 
-\item Product Information Table
+\item Functionality
 
-product\_id: int [pk, increment] \newline\hspace*{1.2ex}
-product\_name: varchar(255) \newline\hspace*{1.2ex}
-price: int [KRW] \newline\hspace*{1.2ex}
-image\_url: varchar(500) \newline\hspace*{1.2ex}
-rating: decimal(2,1) \newline\hspace*{1.2ex}
-category\_id: int [fk] \newline\hspace*{1.2ex}
-detail information...
+This page is displayed when a user clicks on a product star. The scrollable product detail frame allows users to explore all information retrieved from the database about the selected product. Different categories display unique specifications relevant to their type. For example, TVs show details like resolution and AI processor, while refrigerators include color and energy efficiency ratings. Clicking the Cart Button within the frame adds the product to the user's shopping cart. Clicking the Close Button exits the product detail view and navigates the user back to the product cluster page.
 
-\hspace{0.5em}{\scriptsize Table attribute can be changed in development.}
 \end{enumerate}
 
 
-\subsection{Shopping Cart}
-
+\subsection{Shopping Cart Page}
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\linewidth]{Shopping-Cart.png}
@@ -502,90 +490,22 @@ detail information...
     \label{fig:Shopping Cart Page}
 \end{figure}
 
-\begin{itemize}
-\setlength{\parindent}{2ex}
-\item Front-end
-
-Add to Cart: Allows users to add products to their shopping cart via a button. \newline\hspace*{1.2ex}
-Checkout: Enables users to purchase all or selected items from their cart on the cart page. \newline\hspace*{1.2ex}
-Remove Cart Item: Allows users to remove specific items from their cart. \newline\hspace*{1.2ex}
-Adjust Quantity: Adds `+/-` buttons in the cart for users to adjust product quantities.
-
-\item Back-end
-
-Add to Cart: Adds the selected product to the user's cart.\newline\hspace*{1.2ex}
-Quantity Adjustment: Allows adjusting the quantity of items in the cart using `+/-` buttons, with a maximum limit (e.g., 5 items). \newline\hspace*{1.2ex}
-Remove Cart Item: Provides functionality for users to remove specific items from their cart. \newline\hspace*{1.2ex}
-Handle Duplicates: Prevents duplicate items by recognizing items already in the cart and not adding them again. \newline\hspace*{1.2ex}
-View Cart: Allows users to view items currently in their cart along with the total amount on the cart page.
-
-\end{itemize}
-
-\subsection{Related Product Recommendation}
-
-\begin{itemize}
-\setlength{\parindent}{2ex}
-\item Front-end
-
-Display Recommended Products: Shows similar products in the same category on the product page, allowing easy access to each recommended item.
-
-\item Back-end
-
-Recommended Product Data Processing: Sorts products based on category hierarchy to include models from the same category but with different versions in the recommendation list. For example, if a user views a monitor released in 2020, the backend may recommend a 2024 version as a "latest model" in the recommendations.
-
-\end{itemize}
-\vspace{1cm}
-\subsection{Product Filtering}
-
-\begin{itemize}
-\setlength{\parindent}{2ex}
-\item Front-end
-
-Filter Screen: Provides a filtering screen on the subcategory page where users can adjust filter options such as price, size, and type. \newline\hspace*{1.2ex}
-Apply Filters by Condition: Displays only products that meet the conditions set by the user.
-
-\item Back-end
-
-Filtering Options: Filters products in the database based on conditions such as price range or release year specified by the user. Aggregates and delivers filtered results to the front-end. \newline\hspace*{1.2ex}
-Sorting: Allows users to specify sorting criteria (e.g., price, release year) in ascending or descending order alongside filter conditions. Sorts filtered results on the server before returning sorted data.\newline\hspace*{1.2ex}
-Optimization: Enhances performance of filtering and sorting operations by setting database indexes and optimizing queries.
-
-\end{itemize}
-
-\subsection{Category Management}
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.8\linewidth]{Category.png}
-    \caption{Category Page}
-    \label{fig:Category Page}
-\end{figure}
-
 \begin{enumerate}
-\setlength{\parindent}{2ex}
-\item Category Control
-\begin{itemize}
-\setlength{\parindent}{2ex}
-\item Front-end
+\item Page Component
 
-Category Hierarchy: Displays categories in a hierarchy with main, sub, and sub-sub categories labeled as "Galaxy Cluster," "Galaxy," and "Star Cluster," respectively. \newline\hspace*{1.2ex}
-Category Navigation: When a user selects a top-level category (e.g., Galaxy Cluster), the associated subcategories (e.g., Galaxy) are displayed. Selecting a subcategory reveals the final sub-subcategory or product list.
+The page consists of a HOME button, a Cart Button, a scrollable frame displaying cart items, and + (add) and - (delete) buttons within each item's frame.
 
-\item Back-end
+\item UI Configuration
 
-Category Navigation: When a user selects Layer 1 (parent category), the back-end returns a list of Layer 2 (child category) items based on the selected category ID. Based on the selection in Layer 2, the final product list is returned.
+The HOME button is positioned at the top-left corner of the page. Cart items are displayed in a vertically scrollable layout against a galaxy-themed background. The cart item centered in the frame is emphasized with a larger size for better visibility. Each item frame includes the product name, image, price, quantity, and total price, which are centrally aligned. The + (add) and - (delete) buttons are displayed on the right side of each item frame.
 
-\end{itemize}
-\vspace{0.5cm}
-\item Category Information Table
+\item Functionality
 
-category\_id: int [pk, increment] \newline\hspace*{1.2ex}
-category\_name: varchar(255) \newline\hspace*{1.2ex}        
-parent\_id: int \newline\hspace*{1.2ex}
-
-\hspace{0.5em}{\scriptsize Table attribute can be changed in development.}
+The HOME button in the top-left corner redirects users to the main page, exiting the cart page. Users can view all products in their cart along with the total amount. Cart items can be scrolled vertically, with the focused item appearing larger for readability. Clicking the + (add) or - (delete) buttons adjusts the quantity of the respective item by interacting with the back-end, which accesses the S3 database to update the cart information. The maximum quantity for any product is limited to 5. If the item quantity reaches 1 and the user clicks the - (delete) button, the item is removed from the cart. The system also recognizes existing items in the cart and prevents duplicate additions.
 
 \end{enumerate}
+
+
 
 \section{Architecture Design \& Implementation}
 \vspace{0.5cm}
@@ -789,7 +709,7 @@ github.com/hyu-cse4006/shoppingnova-front/tree/main
 
 \item class components
 \begin{itemize}
-\item ShoppingNova-front/: This is themain directory for frontend source code of Shopping-Nova Service.\newline
+\item ShoppingNova-front/: This is the main directory for frontend source code of Shopping-Nova Service.\newline
 appspec.yml: The file defines deployment task and script execution steps for AWS CodeDeploy. Using CodeDeploy, we can automates post-deployment process.\newline
 eslint.config.js: The file specifies code style rules and linting for ESLint.\newline
 tsconfig.json: The file configures typescript compilation behavior.\newline
